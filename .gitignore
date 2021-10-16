@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Ignores for CSharpASCIIGames repo
+*.sln
+*.csproj
+
 # User-specific files
 *.rsuser
 *.suo
@@ -138,6 +142,9 @@ _TeamCity*
 # AxoCover is a Code Coverage Tool
 .axoCover/*
 !.axoCover/settings.json
+
+# Coverlet is a free, cross platform Code Coverage Tool
+coverage*[.json, .xml, .info]
 
 # Visual Studio code coverage results
 *.coverage
