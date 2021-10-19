@@ -1,3 +1,3 @@
 # C# ASCII Games
 
-A homage to old school ascii games.
+A homage to old school games in glorious ascii.
