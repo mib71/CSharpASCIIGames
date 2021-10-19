@@ -13,8 +13,8 @@ namespace Snake
             Y = y;
         }
 
-        public int X { get; }
-        public int Y { get; }
+        public int X { get; set; }
+        public int Y { get; set;  }
     }
     class Program
     {        
@@ -52,13 +52,16 @@ namespace Snake
             snake.Add(new Point(4, 4));
             snake.Add(new Point(4, 4));
             snake.Add(new Point(4, 4));
+            Point candy = new Point(8, 8);
 
             int gameSpeed = 500;
+            int score = 0;
             CursorVisible = false;
+            var random = new Random();
 
             //Only supported on windows machines
-            SetWindowSize(40, 20);
-            SetBufferSize(40, 20);
+            SetWindowSize(40, 21);
+            SetBufferSize(40, 21);
 
             IntroText();            
             ConsoleKeyInfo keyPressed = ReadKey(true);
@@ -68,7 +71,8 @@ namespace Snake
             while (true)
             {
                 #region Draw map
-                Clear();                
+                Clear();
+                WriteLine($"Score: { score }");
                 for (int y = 0; y < map.GetLength(0); y++)
                 {                    
                     for (int x = 0; x < map.GetLength(1); x++)
@@ -80,10 +84,17 @@ namespace Snake
                             Write("  ");
                             BackgroundColor = ConsoleColor.Black;
                         }
+                        else if (candy.X == currentPosition.X && candy.Y == currentPosition.Y)
+                        {
+                            BackgroundColor = ConsoleColor.Red;
+                            Write("  ");
+                            BackgroundColor = ConsoleColor.Black;
+                        }
                         else
+                        {
                             Write(map[y, x]);
-                    }
-                    //WriteLine();
+                        }                            
+                    }                    
                 }
                 #endregion
 
@@ -111,7 +122,18 @@ namespace Snake
                 Point head = snake[0];
                 Point newPosition = new Point(head.X + direction.X, head.Y + direction.Y);
                 snake.Insert(0, newPosition);
-                snake.RemoveAt(snake.Count - 1);
+
+                if (head.X == candy.X && head.Y == candy.Y)
+                {
+                    candy.X = random.Next(1, 19);
+                    candy.Y = random.Next(1, 19);
+                    score += 10;
+                    gameSpeed -= 25;
+                } 
+                else
+                {
+                    snake.RemoveAt(snake.Count - 1);
+                }                                   
                 #endregion
             }
             #endregion
