@@ -47,7 +47,7 @@ namespace Snake
             #endregion
 
             int highScore = 0;
-            ConsoleKeyInfo keyPress;
+            string input = "";
 
             do
             {
@@ -61,7 +61,8 @@ namespace Snake
 
                 int gameSpeed = 500;
                 int score = 0;
-                CursorVisible = false;
+                bool gameOver = false;
+                CursorVisible = false;                
                 var random = new Random();
 
                 //Only supported on windows machines
@@ -73,7 +74,7 @@ namespace Snake
                 #endregion
 
                 #region Game loop
-                while (true)
+                while (!gameOver)
                 {
                     #region Draw map
                     Clear();
@@ -131,17 +132,17 @@ namespace Snake
 
                     if (newPosition.X < 0 || newPosition.X >= 20 || newPosition.Y < 0 || newPosition.Y >= 20)
                     {
-                        break;
+                        gameOver = true;
                     }
-
-                    //TODO: Fix snake collision
-                    //for (int i = 1; i < snake.Count; i++)
-                    //{
-                    //    if (head.X == snake[i].X && head.Y == snake[i].Y)
-                    //    {
-                    //        break;
-                    //    }
-                    //}
+                     
+                    for (int i = 1; i < snake.Count; i++)
+                    {
+                        if (newPosition.X == snake[i].X && newPosition.Y == snake[i].Y)
+                        {
+                            gameOver = true;
+                            break;
+                        }
+                    }
 
                     snake.Insert(0, newPosition);
 
@@ -168,10 +169,12 @@ namespace Snake
                     highScore = score;
                 }
 
-                keyPress = ReadKey(true);
+                System.Threading.Thread.Sleep(1000);
+                CursorVisible = true;
+                input = ReadLine();
                 #endregion
 
-            } while (keyPress.Key == ConsoleKey.Y);
+            } while (input == "yes");
 
             Clear();            
         }          
@@ -208,7 +211,7 @@ namespace Snake
             WriteLine(@"             / /_/ /| |/ / /___/ _, _/ ");            
             WriteLine(@"             \____/ |___/_____/_/ |_|  ");
             SetCursorPosition(0, 16);
-            WriteLine("            Play again Y/N?");
+            Write("       Play again 'yes/no'? ");
         }
     }
 }
